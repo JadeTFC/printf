@@ -21,7 +21,7 @@ int print_percent(va_list ap __attribute__((unused)));
 int print_number(int n);
 int print_unsigned_number(unsigned int n);
 int _putchar(char c);
-int _puts(char *str, int ascii);
+int _puts(char *str);
 int _nbr_len(int prmNumber);
 int _strlen_recursion(char *s);
 int convert_alpha_numeric(int nb, int upper);
