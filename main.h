@@ -1,9 +1,6 @@
-#ifndef PRINT_F
-#define PRINT_F
-
-#include <stdio.h>
+#ifndef MAIN_H
+#define MAIN_H
 #include <stdarg.h>
-
 int _printf(const char *format, ...);
 int print_char(va_list ap);
 int print_str(va_list ap);
