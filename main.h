@@ -1,44 +1,97 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef PRINTF_H
+#define PRINTF_H
+
+#include <stdlib.h>
 #include <stdarg.h>
-int _printf(const char *format, ...);
-int print_char(va_list ap);
-int print_str(va_list ap);
-int print_nbr(va_list ap);
-int print_binary(va_list ap);
-int print_octal(va_list ap);
-int print_hexa_lower(va_list ap);
-int print_hexa_upper(va_list ap);
-int print_unsigned(va_list ap);
-int print_str_unprintable(va_list ap);
-int print_str_reverse(va_list ap);
-int print_ptr(va_list ap);
-int print_rot13(va_list ap);
-int print_flag(char *s, func_t *func);
-int print_modifier(char *s, func_t *func);
-int print_percent(va_list ap __attribute__((unused)));
-int print_number(int n);
-int print_unsigned_number(unsigned int n);
-int _putchar(char c);
-int _puts(char *str, int ascii);
-int _nbr_len(int prmNumber);
-int _strlen_recursion(char *s);
-int convert_alpha_numeric(int nb, int upper);
-char *convert_rot13(char *str);
-char *convert_base(unsigned long nb, unsigned int base, int upper);
-char *_strdup(char *str);
-char *convert_base_pointer(unsigned long p);
-char *print_width(char *s, func_t *func, va_list ap);
+#include <assert.h>
+#include <stdbool.h>
+
+/* macros */
+#define FLUSH -1
+#define PF_INIT {false, false, false}
+#define NIL "(nil)"
+#define HEXA "0x"
+#define NULL_STRING "(null)"
+#define NUL '\0'
+#define KILOBYTE 1024
+#define ABS(x) (((x) <  0) ? -(x) : (x))
 
 /**
- * struct flags_printf - struct conversion to function
- * @c: flag string
- * @f: pointer to func
+ * struct modifiers - struct containing flags to "turn on"
+ * when a flag specifier is passed to _printf()
+ * @plus: flag for the '+' character
+ * @space: flag for the ' ' character
+ * @hash: flag for the '#' character
  */
-
-typedef struct flags_printf
+typedef struct modifiers
 {
-	char *c;
-	int (*f)(va_list);
-} flags_p;
+	_Bool plus;
+	_Bool space;
+	_Bool hash;
+} mods;
+
+/**
+ * struct printHandler - struct to choose the right function depending
+ * on the format specifier passed to _printf()
+ * @c: format specifier
+ * @f: pointer to the correct printing function
+ */
+typedef struct printHandler
+{
+	char c;
+	int (*f)(va_list ap, mods *f);
+} ph;
+
+/* print_nums */
+int print_int(va_list l, mods *f);
+void print_number(int n);
+int print_unsigned(va_list l, mods *f);
+int count_digit(int i);
+
+/* print_bases */
+int print_hex(va_list l, mods *f);
+int print_hex_big(va_list l, mods *f);
+int print_binary(va_list l, mods *f);
+int print_octal(va_list l, mods *f);
+
+/* converter */
+char *convert(unsigned long int num, int base, int lowercase);
+
+/* _printf */
+int _printf(const char *format, ...);
+
+/* get_print */
+int (*get_print(char s))(va_list, mods *);
+
+/* get_flags */
+int get_flags(char s, mods *f);
+
+/* print_alpha */
+int print_string(va_list l, mods *f);
+int print_char(va_list l, mods *f);
+
+/* write_funcs */
+int _putchar(char c);
+int _puts(char *str);
+
+/* print_custom */
+int print_rot13(va_list l, mods *f);
+int print_rev(va_list l, mods *f);
+int print_bigS(va_list l, mods *f);
+_Bool isNonAlphaNumeric(char c);
+
+/* print_address */
+int print_address(va_list l, mods *f);
+
+/* print_percent */
+int print_percent(va_list l, mods *f);
+
+/* assertions */
+_Bool invalidInputs(const char *p);
+
+/* unit_tests */
+void tusBasicTester(void);
+void tusAdvancedTester(void);
+void tusSuperAdvanced(void);
+
 #endif
