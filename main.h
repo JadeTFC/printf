@@ -14,6 +14,8 @@ int print_str_unprintable(va_list ap);
 int print_str_reverse(va_list ap);
 int print_ptr(va_list ap);
 int print_rot13(va_list ap);
+int print_flag(char *s, func_t *func);
+int print_modifier(char *s, func_t *func);
 int print_percent(va_list ap __attribute__((unused)));
 int print_number(int n);
 int print_unsigned_number(unsigned int n);
@@ -26,6 +28,7 @@ char *convert_rot13(char *str);
 char *convert_base(unsigned long nb, unsigned int base, int upper);
 char *_strdup(char *str);
 char *convert_base_pointer(unsigned long p);
+char *print_width(char *s, func_t *func, va_list ap);
 
 /**
  * struct flags_printf - struct conversion to function
